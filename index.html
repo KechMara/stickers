@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kechmara Stickers</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-dark: #374ebf;
+      --bg: #f9f9f9;
+      --white: #ffffff;
+      --text-dark: #222;
+      --text-light: #666;
+      --radius: 12px;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --transition: 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-dark);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--primary);
+      padding: 1rem 2rem;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--white);
+    }
+
+    .tagline {
+      font-size: 1rem;
+      color: var(--white);
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      justify-items: center;
+    }
+
+    .product {
+      background-color: var(--white);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 300px;
+      transition: transform var(--transition);
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+    }
+
+    .product img {
+      width: 100%;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+    }
+
+    .product h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .product p {
+      color: var(--text-light);
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 0.8rem 1.2rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color var(--transition);
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .form-content {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    .form-content h2 {
+      margin-bottom: 1rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: var(--radius);
+      transition: border-color var(--transition);
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🧷 Kechmara Stickers</div>
+    <div class="tagline">ستيكرات بجودة و ستايل 🔥</div>
+  </nav>
+
+  <div class="container" id="productList"></div>
+
+  <div id="orderForm" class="modal hidden">
+    <div class="form-content">
+      <span onclick="closeForm()" class="close">&times;</span>
+      <h2>طلب ديالك</h2>
+      <form id="form">
+        <input type="text" id="fullName" placeholder="سميتك" required />
+        <input type="tel" id="phoneNumber" placeholder="نمرة الهاتف" required />
+        <input type="text" id="address" placeholder="العنوان" required />
+        <input type="hidden" id="productName" />
+        <button type="submit">تأكيد الطلب</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+  const products = [
+    { name: "Sticker gang", price: 30, image: "1.png" },
+    { name: "Sticker meme", price: 30, image: "2.png" },
+    { name: "Sticker boy", price: 30, image: "3.png" },
+    { name: "Sticker black", price: 35, image: "4.png" },
+    { name: "Sticker Chill", price: 30, image: "5.png" },
+    { name: "Sticker Gamer", price: 30, image: "6.png" },
+    { name: "Sticker cars", price: 25, image: "7.png" },
+    { name: "Sticker cars", price: 30, image: "8.png" },
+    { name: "Sticker motos", price: 30, image: "9.png" },
+    { name: "Sticker motos", price: 30, image: "10.png" },
+    { name: "Sticker motos", price: 30, image: "11.png" },
+    { name: "Sticker motos", price: 25, image: "12.png" },
+    { name: "Sticker FakeGang", price: 30, image: "13.png" },
+    { name: "Sticker girl", price: 30, image: "14.png" },
+    { name: "Sticker 4;20", price: 30, image: "15.png" },
+    { name: "Sticker FakeGang", price: 30, image: "16.png" },
+    { name: "Sticker crazy", price: 30, image: "17.png" },
+    { name: "Sticker monster", price: 30, image: "18.png" },
+    { name: "Sticker black", price: 35, image: "19.png" },
+    { name: "Sticker Funny", price: 30, image: "20.png" }
+  ];
+
+  const productList = document.getElementById("productList");
+  productList.innerHTML = products.map(p => `
+    <div class="product">
+      <img src="${p.image}" alt="${p.name}">
+      <h2>${p.name}</h2>
+      <p>${p.price} MAD</p>
+      <button onclick="openForm('${p.name}', ${p.price})">اشري دابا</button>
+    </div>
+  `).join("");
+
+  function openForm(productName, price) {
+    document.getElementById("orderForm").classList.remove("hidden");
+    document.getElementById("productName").value = `${productName} (${price} MAD)`;
+  }
+
+  function closeForm() {
+    document.getElementById("orderForm").classList.add("hidden");
+  }
+
+  document.getElementById("form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("fullName").value.trim();
+    const phone = document.getElementById("phoneNumber").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const product = document.getElementById("productName").value;
+
+    if (!name || !phone || !address) {
+      alert("من فضلك عَمّر جميع الحقول.");
+      return;
+    }
+
+    const message = `📦 طلب جديد:\n\n📌 المنتج: ${product}\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📍 العنوان: ${address}`;
+
+    // ⚠️ استخدم توكن حقيقي هنا (ولا تضعه في الكود المباشر عند نشر الموقع)
+    const telegramBotToken = "8194096757:AAGFkp3CKGPvMh-6fuKjLKafEEnrDTMKtU4";
+    const telegramChatId = "5440137313";
+
+    const apiURL = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+
+    try {
+      const response = await fetch(apiURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: telegramChatId,
+          text: message,
+        }),
+      });
+
+      const result = await response.json();
+      console.log("نتيجة إرسال الرسالة:", result); // لمراقبة الاستجابة
+
+      if (result.ok) {
+        alert("✅ تم إرسال الطلب بنجاح!");
+        document.getElementById("form").reset();
+        closeForm();
+      } else {
+        alert("❌ وقع خطأ أثناء الإرسال: " + result.description);
+      }
+    } catch (error) {
+      console.error("خطأ:", error);
+      alert("❌ وقع خطأ تقني: " + error.message);
+    }
+  });
+</script>
+</body>
+</html>
